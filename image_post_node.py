@@ -49,10 +49,12 @@ class PostImageToAPI:
 
             # Add each image to the files list with 'images' as the field name
             files.append(('images[]', (f'image_{batch_number}.png', buffer, 'image/png')))
+           
+        files.append(('json_data', (None, json.dumps(json_payload), 'application/json')))
         
         # Send all images and JSON data in a single request
-        response = requests.post(api_url, headers=headers, files=files, data=json_payload)
-        
+        response = requests.post(api_url, headers=headers, files=files)
+
         if response.status_code == 200:
             result = response.json()
             print(f"PostImageToAPI: Posted {len(images)} images with JSON data to {api_url}\nResponse: {result}")
